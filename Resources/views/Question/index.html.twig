@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block title "Kommunalomat Karlsruhe" %}
+
+{% block content %}
+  <div class="medium-8 medium-offset-2 columns">
+    <h3>Frage {{weight}}</h3>
+    <div class="panel">
+      <h4>{{ title }}</h4>
+      <p>Test text</p>
+      <a href="#" class="button success small">Zustimmung</a>
+      <a href="#" class="button small">Neutral</a>
+      <a href="#" class="button alert small">Ablehnung</a>
+    </div>
+    <ul class="button-group round">
+      <!--<li><a href="#" class="tiny button secondary">zurück</a></li>-->
+      {% for i in 1..question_count %}
+        {% if weight==i %}
+          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button alert">{{i}}</a></li>
+        {% else %}
+          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button secondary">{{i}}</a></li>
+        {% endif %}
+      {% endfor %}
+      <!--<li><a href="#" class="tiny button secondary">vor</a></li>-->
+    </ul>
+  </div>
+{% endblock %}

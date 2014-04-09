@@ -1,0 +1,15 @@
+MadwaysKommunalomatBundleQuestion:
+    pattern: /question/{weight}/
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:index, weight: 1 }
+    requirements:
+        weight:  \d+
+
+MadwaysKommunalomatBundleQuestionAdd:
+    pattern: /question/{weight}/add/
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:create, weight: 1 }
+    requirements:
+        weight:  \d+
+
+static_pages:
+    pattern:  /{page}
+    defaults: { _controller: MadwaysKommunalomatBundle:StaticPage:index, page: "welcome" }

@@ -1,0 +1,7 @@
+parameters:
+#    madways_kommunalomat.example.class: Madways\KommunalomatBundle\Example
+
+services:
+#    madways_kommunalomat.example:
+#        class: %madways_kommunalomat.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
