@@ -5,6 +5,7 @@ namespace Madways\KommunalomatBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Madways\KommunalomatBundle\Entity\Question as Question;
 
 class QuestionController extends Controller
@@ -28,26 +29,47 @@ class QuestionController extends Controller
             );
         }
 
+        return array('question' => $question,
+                     'question_count' => $this->_getQuestionCount());
+    }
+
+    /**
+    * @Template()
+    */
+    public function createAction(Request $request)
+    {
+        $question = new Question();
+
+        $form = $this->createFormBuilder($question)
+                ->add('title', 'text')
+                ->add('explanation')
+                ->add('save', 'submit')
+                ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $question->setWeight($this->_getQuestionCount()+1);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($question);
+            $em->flush();
+        }
+
+        return array('form' => $form->createView(),
+                     'question_count' => $this->_getQuestionCount() );
+    }
+
+    /**
+    * Helper function to get the count of all questions
+    */
+    private function _getQuestionCount() {
+        // Initiate Repository
+        $repository = $this->getDoctrine()
+                ->getRepository('MadwaysKommunalomatBundle:Question');
         // get count of all questions
         $question_count = $repository->createQueryBuilder("q")
                                         ->select('count(q.id)')
                                         ->getQuery()->getSingleScalarResult();
-
-        return array('title' => $question->getTitle(),
-                     'weight' => $question->getWeight(),
-                     'question_count' => $question_count);
-    }
-
-    public function createAction($weight)
-    {
-        $question = new Question();
-        $question->setTitle('A Foo Bar');
-        $question->setWeight($weight);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($question);
-        $em->flush();
-
-        return new Response('Created question id '.$question->getId());
+        return $question_count;
     }
 }

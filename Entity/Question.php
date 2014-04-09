@@ -22,6 +22,11 @@ class Question
     protected $title;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    protected $explanation;
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $weight;
@@ -80,5 +85,28 @@ class Question
     public function getWeight()
     {
         return $this->weight;
+    }
+
+    /**
+     * Set explanation
+     *
+     * @param string $explanation
+     * @return Question
+     */
+    public function setExplanation($explanation)
+    {
+        $this->explanation = $explanation;
+
+        return $this;
+    }
+
+    /**
+     * Get explanation
+     *
+     * @return string 
+     */
+    public function getExplanation()
+    {
+        return $this->explanation;
     }
 }

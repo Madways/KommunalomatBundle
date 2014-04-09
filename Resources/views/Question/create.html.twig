@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title "Kommunalomat Karlsruhe" %}
+
+{% block content %}
+  <div class="medium-8 medium-offset-2 columns">
+    <h3>Neue Frage</h3>
+    <div class="panel">
+      {{ form(form) }}
+    </div>
+    <ul class="button-group round">
+      {% for i in 1..question_count %}
+          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button secondary">{{i}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

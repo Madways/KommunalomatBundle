@@ -5,7 +5,7 @@ MadwaysKommunalomatBundleQuestion:
         weight:  \d+
 
 MadwaysKommunalomatBundleQuestionAdd:
-    pattern: /question/{weight}/add/
+    pattern: /question/add/
     defaults: { _controller: MadwaysKommunalomatBundle:Question:create, weight: 1 }
     requirements:
         weight:  \d+
