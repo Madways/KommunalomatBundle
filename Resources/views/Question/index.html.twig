@@ -7,19 +7,23 @@
     <h3>Frage {{ question.weight }}</h3>
     <div class="panel">
       <h4>{{ question.getTitle }}</h4>
-      <p>{{ question.getExplanation }}</p>
+      <p>{{ question.getExplanation | nl2br }}</p>
       <a href="#" class="button success small">Zustimmung</a>
       <a href="#" class="button small">Neutral</a>
       <a href="#" class="button alert small">Ablehnung</a>
     </div>
-    <ul class="button-group round">
+    <div class="pagination-centered">
+    <ul class="pagination">
+      <li class="arrow unavailable"><a href="">&laquo;</a></li>
       {% for i in 1..question_count %}
         {% if question.getWeight == i %}
-          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button success">{{i}}</a></li>
+          <li class="current"><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}">{{i}}</a></li>
         {% else %}
-          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button secondary">{{i}}</a></li>
+          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="">{{i}}</a></li>
         {% endif %}
       {% endfor %}
+      <li class="arrow"><a href="">&raquo;</a></li>
     </ul>
+    </div>
   </div>
 {% endblock %}

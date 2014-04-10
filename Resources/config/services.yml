@@ -2,6 +2,8 @@ parameters:
 #    madways_kommunalomat.example.class: Madways\KommunalomatBundle\Example
 
 services:
-#    madways_kommunalomat.example:
-#        class: %madways_kommunalomat.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+  twig.extension.txt:
+      class: Twig_Extensions_Extension_Text
+      tags:
+        - { name: twig.extension }
+

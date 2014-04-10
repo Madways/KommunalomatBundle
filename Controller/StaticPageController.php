@@ -15,6 +15,9 @@ class StaticPageController extends Controller
             case "info":
                 return $this->render('::info.html.twig');
                 break;
+            case "admin":
+                return $this->render('MadwaysKommunalomatBundle::admin.html.twig');
+                break;
         }
     }
 }

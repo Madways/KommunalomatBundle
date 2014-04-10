@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block content %}
+<div class="medium-8 medium-offset-2 columns">
+<h3>Admin Bereich</h3>
+<p>Verwaltung des Kommunalomats</p>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<h3>Menü</h3>
+<ul class="side-nav">
+<li><a href="{{path("MadwaysKommunalomatBundleQuestion")}}">Fragen</a>
+<li><a href="{{path("MadwaysKommunalomatBundleQuestionAdd")}}">neue Frage</a>
+</ul>
+{% endblock %}

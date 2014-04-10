@@ -1,4 +1,4 @@
-{% extends "::base.html.twig" %}
+{% extends "MadwaysKommunalomatBundle::admin.html.twig" %}
 
 {% block title "Kommunalomat Karlsruhe" %}
 
@@ -8,10 +8,5 @@
     <div class="panel">
       {{ form(form) }}
     </div>
-    <ul class="button-group round">
-      {% for i in 1..question_count %}
-          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="tiny button secondary">{{i}}</a></li>
-      {% endfor %}
-    </ul>
   </div>
 {% endblock %}

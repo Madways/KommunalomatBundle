@@ -53,6 +53,8 @@ class QuestionController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($question);
             $em->flush();
+
+            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleQuestionAdd"));
         }
 
         return array('form' => $form->createView(),
