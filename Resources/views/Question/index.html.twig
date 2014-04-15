@@ -8,9 +8,11 @@
     <div class="panel">
       <h4>{{ question.getTitle }}</h4>
       <p>{{ question.getExplanation | nl2br }}</p>
-      <a href="#" class="button success small">Zustimmung</a>
-      <a href="#" class="button small">Neutral</a>
-      <a href="#" class="button alert small">Ablehnung</a>
+      {{ form_start(form) }}
+        {{ form_widget(form.approve) }}
+        {{ form_widget(form.neutral) }}
+        {{ form_widget(form.disapprove) }}
+      {{ form_end(form) }}
     </div>
     <div class="pagination-centered">
     <ul class="pagination">
