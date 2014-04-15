@@ -64,12 +64,13 @@ class QuestionController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            if($last_question) {
-                return $this->redirect($this->generateUrl('static_pages'));
-            }
 
             // more or less dirty work around to reset the form and display the next question
             return $this->forward('MadwaysKommunalomatBundle:Question:Index', array('weight' => $weight, 'request' => new Request()));
+        }
+
+        if($last_question) {
+            return $this->redirect($this->generateUrl('static_pages'));
         }
 
         return array('question' => $question,
