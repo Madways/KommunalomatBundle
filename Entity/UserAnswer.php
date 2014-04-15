@@ -28,6 +28,10 @@ class UserAnswer
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * this should be some kind of enum field (http://stackoverflow.com/questions/14933228/how-to-generate-entities-and-schemas-for-enum-in-symfony)
+     * for now i set 0=approve, 1= neutral, 2=disapprove
+     * this may confuse in aspect to the points calculation
      */
     protected $answer;
 
@@ -41,6 +45,28 @@ class UserAnswer
     public function setAnswer($answer)
     {
         $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Set answer as string
+     *
+     * @param string $answer
+     * @return UserAnswer
+     */
+    public function setAnswerAsString($answer)
+    {
+        switch ($answer) {
+            case "approve":
+                $this->answer = 0;
+                break;
+            case "disapprove":
+                $this->answer = 2;
+                break;
+            default:
+                $this->answer = 1;
+        }
 
         return $this;
     }

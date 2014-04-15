@@ -28,7 +28,7 @@ class User
 
     public function __construct()
     {
-        $this->answers = new ArrayCollection();
+        //$this->answers = new ArrayCollection();
     }
 
     /**
