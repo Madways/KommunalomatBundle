@@ -35,7 +35,7 @@ class QuestionController extends Controller
         }
 
         // empty Object
-        $answer = new UserAnswer();
+        $answer = new UserAnswer(); // TODO: find existing entry if there is one 
 
 
         // Create the Form
@@ -55,12 +55,12 @@ class QuestionController extends Controller
             // set it to the right question given by the form
             $answer->setQuestion($em->getReference('MadwaysKommunalomatBundle:Question', $form->get('question')->getData() ));
 
+            // set user by id
+            $answer->setUser($em->getReference('MadwaysKommunalomatBundle:User', 3 ));
+
             // set the answer by clicked button
             $answer->setAnswerAsString($form->getClickedButton()->getName());
 
-            $em->persist($user);
-            $em->flush();
-            $answer->setUser($user);
             $em->persist($answer);
             $em->flush();
 

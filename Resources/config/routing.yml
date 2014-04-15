@@ -10,6 +10,8 @@ MadwaysKommunalomatBundleQuestionAdd:
     requirements:
         weight:  \d+
 
-static_pages:
-    pattern:  /{page}
-    defaults: { _controller: MadwaysKommunalomatBundle:StaticPage:index, page: "welcome" }
+MadwaysKommunalomatBundleAdminOverview:
+    pattern:  /admin
+    defaults: 
+        _controller: FrameworkBundle:Template:template
+        template:    'MadwaysKommunalomatBundle::admin.html.twig'
