@@ -1,11 +1,11 @@
 MadwaysKommunalomatBundleQuestion:
-    pattern: /question/{weight}/
+    pattern: /question/{weight}
     defaults: { _controller: MadwaysKommunalomatBundle:Question:index, weight: 1 }
     requirements:
         weight:  \d+
 
 MadwaysKommunalomatBundleQuestionAdd:
-    pattern: /admin/question/add/
+    pattern: /admin/question/add
     defaults: { _controller: MadwaysKommunalomatBundle:Question:create, weight: 1 }
     requirements:
         weight:  \d+
