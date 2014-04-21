@@ -22,16 +22,6 @@ class User
     protected $session;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserAnswer", mappedBy="user")
-     */
-    protected $answers;
-
-    public function __construct()
-    {
-        //$this->answers = new ArrayCollection();
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -62,38 +52,5 @@ class User
     public function getSession()
     {
         return $this->session;
-    }
-
-    /**
-     * Add answers
-     *
-     * @param \Madways\KommunalomatBundle\Entity\QuestionAnswer $answers
-     * @return User
-     */
-    public function addAnswer(\Madways\KommunalomatBundle\Entity\QuestionAnswer $answers)
-    {
-        $this->answers[] = $answers;
-
-        return $this;
-    }
-
-    /**
-     * Remove answers
-     *
-     * @param \Madways\KommunalomatBundle\Entity\QuestionAnswer $answers
-     */
-    public function removeAnswer(\Madways\KommunalomatBundle\Entity\QuestionAnswer $answers)
-    {
-        $this->answers->removeElement($answers);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
     }
 }

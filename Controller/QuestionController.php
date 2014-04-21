@@ -56,7 +56,7 @@ class QuestionController extends Controller
             $answer->setQuestion($em->getReference('MadwaysKommunalomatBundle:Question', $form->get('question')->getData() ));
 
             // set user by id
-            $answer->setUser($em->getReference('MadwaysKommunalomatBundle:User', 3 ));
+            $answer->setUser($em->getReference('MadwaysKommunalomatBundle:User', 61 ));
 
             // set the answer by clicked button
             $answer->setAnswerAsString($form->getClickedButton()->getName());
@@ -70,7 +70,7 @@ class QuestionController extends Controller
         }
 
         if($last_question) {
-            return $this->redirect($this->generateUrl('static_pages'));
+            return $this->redirect($this->generateUrl('welcome'));
         }
 
         return array('question' => $question,
