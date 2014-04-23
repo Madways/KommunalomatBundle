@@ -30,17 +30,26 @@ class QuestionController extends Controller
         $question = $repository->findOneByWeight($weight);
 
         if (!$question) {
-            $question = new Question();
-            $last_question = true;
+            return $this->redirect($this->generateUrl('welcome'));
         }
 
-        // empty Object
-        $answer = new UserAnswer(); // TODO: find existing entry if there is one 
+        // Initiate Repository
+        $repository2 = $this->getDoctrine()
+                ->getRepository('MadwaysKommunalomatBundle:UserAnswer');
+
+        try {
+            $answer = $repository2->createQueryBuilder('a')
+                ->where("a.user = :user AND a.question = :question")
+                ->setParameter('user', 61)
+                ->setParameter('question', $question->getId())
+                ->getQuery()->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            $answer = new UserAnswer();
+        }
 
 
         // Create the Form
         $form = $this->createFormBuilder($answer)
-                ->setAction($this->generateUrl("MadwaysKommunalomatBundleQuestionAnswer", array('weight' => $weight+1)))
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
                 ->add('approve', 'submit', array('label'  => 'Zustimmung', 'attr'=> array('class'=>'small success')))
                 ->add('neutral', 'submit', array('label'  => 'Neutral', 'attr'=> array('class'=>'small')))
@@ -64,13 +73,7 @@ class QuestionController extends Controller
             $em->persist($answer);
             $em->flush();
 
-
-            // more or less dirty work around to reset the form and display the next question
-            return $this->forward('MadwaysKommunalomatBundle:Question:Answer', array('weight' => $weight, 'request' => new Request()));
-        }
-
-        if($last_question) {
-            return $this->redirect($this->generateUrl('welcome'));
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestionAnswer', array('weight' => $weight+1 )));
         }
 
         return array('question' => $question,
