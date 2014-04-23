@@ -9,9 +9,9 @@
       <h4>{{ question.getTitle }}</h4>
       <p>{{ question.getExplanation | nl2br }}</p>
       {{ form_start(form) }}
-        {{ form_widget(form.approve) }}
-        {{ form_widget(form.neutral) }}
-        {{ form_widget(form.disapprove) }}
+        {{ form_widget(form.approve, {'attr': {'class': 'small success'}}) }}
+        {{ form_widget(form.neutral, {'attr': {'class': 'small'}}) }}
+        {{ form_widget(form.disapprove, {'attr': {'class': 'small alert'}}) }}
       {{ form_end(form) }}
     </div>
     <div class="pagination-centered">

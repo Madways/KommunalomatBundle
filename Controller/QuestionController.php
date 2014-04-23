@@ -51,9 +51,9 @@ class QuestionController extends Controller
         // Create the Form
         $form = $this->createFormBuilder($answer)
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
-                ->add('approve', 'submit', array('label'  => 'Zustimmung', 'attr'=> array('class'=>'small success')))
-                ->add('neutral', 'submit', array('label'  => 'Neutral', 'attr'=> array('class'=>'small')))
-                ->add('disapprove', 'submit', array('label'  => 'Ablehnung', 'attr'=> array('class'=>'small alert')))
+                ->add('approve', 'submit', array('label'  => 'Zustimmung'))
+                ->add('neutral', 'submit', array('label'  => 'Neutral'))
+                ->add('disapprove', 'submit', array('label'  => 'Ablehnung'))
                 ->getForm();
 
         $form->handleRequest($request);
