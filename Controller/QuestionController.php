@@ -15,7 +15,7 @@ class QuestionController extends Controller
     /**
     * @Template()
     */
-    public function indexAction($weight, Request $request) 
+    public function answerAction($weight, Request $request) 
     {
         $last_question = false;
 
@@ -40,7 +40,7 @@ class QuestionController extends Controller
 
         // Create the Form
         $form = $this->createFormBuilder($answer)
-                ->setAction($this->generateUrl("MadwaysKommunalomatBundleQuestion", array('weight' => $weight+1)))
+                ->setAction($this->generateUrl("MadwaysKommunalomatBundleQuestionAnswer", array('weight' => $weight+1)))
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
                 ->add('approve', 'submit', array('label'  => 'Zustimmung', 'attr'=> array('class'=>'small success')))
                 ->add('neutral', 'submit', array('label'  => 'Neutral', 'attr'=> array('class'=>'small')))
@@ -66,7 +66,7 @@ class QuestionController extends Controller
 
 
             // more or less dirty work around to reset the form and display the next question
-            return $this->forward('MadwaysKommunalomatBundle:Question:Index', array('weight' => $weight, 'request' => new Request()));
+            return $this->forward('MadwaysKommunalomatBundle:Question:Answer', array('weight' => $weight, 'request' => new Request()));
         }
 
         if($last_question) {
@@ -99,7 +99,7 @@ class QuestionController extends Controller
             $em->persist($question);
             $em->flush();
 
-            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleQuestionAdd"));
+            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleQuestionCreate"));
         }
 
         return array('form' => $form->createView(),

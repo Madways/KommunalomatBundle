@@ -1,14 +1,20 @@
-MadwaysKommunalomatBundleQuestion:
+MadwaysKommunalomatBundleQuestionAnswer:
     pattern: /question/{weight}
-    defaults: { _controller: MadwaysKommunalomatBundle:Question:index, weight: 1 }
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:answer, weight: 1 }
     requirements:
         weight:  \d+
 
 MadwaysKommunalomatBundleQuestionCreate:
     pattern: /admin/question/create
-    defaults: { _controller: MadwaysKommunalomatBundle:Question:create, weight: 1 }
-    requirements:
-        weight:  \d+
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:create }
+
+MadwaysKommunalomatBundleParty:
+    pattern: /admin/party
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:index }
+
+MadwaysKommunalomatBundlePartyCreate:
+    pattern: /admin/party/create
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:create }
 
 MadwaysKommunalomatBundleAdminOverview:
     pattern:  /admin

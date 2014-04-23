@@ -19,9 +19,9 @@
       <li class="arrow unavailable"><a href="">&laquo;</a></li>
       {% for i in 1..question_count %}
         {% if question.getWeight == i %}
-          <li class="current"><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}">{{i}}</a></li>
+          <li class="current"><a href="{{ path("MadwaysKommunalomatBundleQuestionAnswer", {'weight': i})  }}">{{i}}</a></li>
         {% else %}
-          <li><a href="{{ path("MadwaysKommunalomatBundleQuestion", {'weight': i})  }}" class="">{{i}}</a></li>
+          <li><a href="{{ path("MadwaysKommunalomatBundleQuestionAnswer", {'weight': i})  }}" class="">{{i}}</a></li>
         {% endif %}
       {% endfor %}
       <li class="arrow"><a href="">&raquo;</a></li>
