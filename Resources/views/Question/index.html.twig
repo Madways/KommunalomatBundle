@@ -1,0 +1,38 @@
+{% extends "MadwaysKommunalomatBundle::admin.html.twig" %}
+
+{% block content_admin %}
+    <div class="row">
+      <h3>Alle Fragen</h3>
+      <table class="small-12 columns">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Frage</th>
+            <th>Sortieren</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for question in questions %}
+          <tr>
+            <td>{{ question.weight }}</td>
+            <td>{{ question.title }}</td>
+            <td>
+              {% if question.weight != 1 %}
+                <a href="{{ path("MadwaysKommunalomatBundleQuestionMove", {'id': question.id, 'direction': 'up' })  }}" class="">up</a>
+              {% endif %}
+              {% if question.weight != 1 and question.weight != question_count %} / {% endif %}
+              {% if question.weight != question_count %}
+                <a href="{{ path("MadwaysKommunalomatBundleQuestionMove", {'id': question.id, 'direction': 'down' })  }}" class="">down</a>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ path("MadwaysKommunalomatBundleQuestionEdit", {'id': question.id })  }}" class="">Edit</a>
+              <a href="{{ path("MadwaysKommunalomatBundleQuestionDelete", {'id': question.id })  }}" class="">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

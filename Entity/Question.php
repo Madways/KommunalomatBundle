@@ -1,4 +1,5 @@
 <?php
+
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -6,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="kommunalomat_question")
+ * @ORM\Entity(repositoryClass="Madways\KommunalomatBundle\Entity\Repository\QuestionRepository")
  */
 class Question
 {

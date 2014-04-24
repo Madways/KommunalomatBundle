@@ -6,7 +6,7 @@ MadwaysKommunalomatBundleQuestionAnswer:
 
 MadwaysKommunalomatBundleResult:
     pattern: /result/{id}
-    defaults: { _controller: MadwaysKommunalomatBundle:Question:result, id: 1 }
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:result, id: null }
     requirements:
         id:  \d+
 
@@ -24,6 +24,19 @@ MadwaysKommunalomatBundleQuestionEdit:
     requirements:
         id:  \d+
 
+MadwaysKommunalomatBundleQuestionDelete:
+    pattern: /admin/question/{id}/delete
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:delete }
+    requirements:
+        id:  \d+
+
+MadwaysKommunalomatBundleQuestionMove:
+    pattern: /admin/question/{id}/move/{direction}
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:move }
+    requirements:
+        id:  \d+
+        direction: up|down
+
 MadwaysKommunalomatBundleParty:
     pattern: /admin/party
     defaults: { _controller: MadwaysKommunalomatBundle:Party:index }
@@ -35,6 +48,12 @@ MadwaysKommunalomatBundlePartyCreate:
 MadwaysKommunalomatBundlePartyEdit:
     pattern: /admin/party/{id}
     defaults: { _controller: MadwaysKommunalomatBundle:Party:form }
+    requirements:
+        id:  \d+
+
+MadwaysKommunalomatBundlePartyDelete:
+    pattern: /admin/party/{id}/delete
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:delete }
     requirements:
         id:  \d+
 

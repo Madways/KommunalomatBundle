@@ -12,6 +12,25 @@ use Madways\KommunalomatBundle\Entity\User as User;
 
 class QuestionController extends Controller
 {
+
+    /**
+    * @Template()
+    */
+    public function indexAction() 
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $questions = $em->getRepository('MadwaysKommunalomatBundle:Question')->findAll();
+
+        if (!$questions) {
+            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleQuestionCreate"));
+        }
+
+        return array('questions' => $questions,
+                     'question_count' => $this->_getQuestionCount());
+    }
+
     /**
     * @Template()
     */
@@ -69,21 +88,31 @@ class QuestionController extends Controller
     /**
     * @Template()
     */
-    public function createAction(Request $request)
+    public function formAction(Request $request, $id = NULL)
     {
-        $question = new Question();
+        $em = $this->getDoctrine()->getManager();
+
+        if (isset($id)) {
+            $question = $em->find('MadwaysKommunalomatBundle:Question', $id);
+
+            if (!$question) {
+                throw new NotFoundHttpException("Invalid question.");
+            }
+        } else {
+            $question = new Question();
+            $question->setWeight($this->_getQuestionCount()+1);
+        }
 
         $form = $this->createFormBuilder($question)
                 ->add('title', 'text')
                 ->add('explanation')
+                ->add('weight', 'hidden')
                 ->add('save', 'submit')
                 ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $question->setWeight($this->_getQuestionCount()+1);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($question);
             $em->flush();
 
@@ -92,6 +121,60 @@ class QuestionController extends Controller
 
         return array('form' => $form->createView(),
                      'question_count' => $this->_getQuestionCount() );
+    }
+
+    /**
+    * 
+    * @Template()
+    */
+    public function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $question = $em->find('MadwaysKommunalomatBundle:Question', $id);
+
+        if (!$question) {
+            throw new NotFoundHttpException("Invalid question.");
+        }
+
+        $em->remove($question);
+        $em->flush();
+
+        // TODO: resort all question weights
+        // TODO: ask for confirmation
+
+        return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestion'));
+    }
+
+    /**
+    * 
+    * @Template()
+    */
+    public function moveAction($id, $direction)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $question_moved = $em->find('MadwaysKommunalomatBundle:Question', $id);
+
+        if (!$question_moved) {
+            throw new NotFoundHttpException("no questions to move");
+        }
+
+        if ($direction == "up") {
+            $question_before = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($question_moved->getWeight()-1);
+            $question_before->setWeight($question_moved->getWeight());
+            $question_moved->setWeight($question_moved->getWeight()-1);
+        } elseif ($direction == "down") {
+            $question_after = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($question_moved->getWeight()+1);
+            $question_after->setWeight($question_moved->getWeight());
+            $question_moved->setWeight($question_moved->getWeight()+1);
+        } else {
+            throw new NotFoundHttpException("unknown direction");
+        }
+
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestion'));
     }
 
     /*

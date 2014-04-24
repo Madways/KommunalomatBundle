@@ -1,16 +1,22 @@
 {% extends "::base.html.twig" %}
 
 {% block content %}
-<div class="medium-8 medium-offset-2 columns">
-<h3>Admin Bereich</h3>
-<p>Verwaltung des Kommunalomats</p>
-</div>
+  <div class="small-8 medium-8 medium-offset-2 columns">
+    {% block content_admin %}
+      <h3>Admin Bereich</h3>
+      <p>Verwaltung des Kommunalomats</p>
+    {% endblock %}
+  </div>
 {% endblock %}
 
 {% block sidebar %}
-<h3>Menü</h3>
-<ul class="side-nav">
-<li><a href="{{path("MadwaysKommunalomatBundleQuestion")}}">Fragen</a>
-<li><a href="{{path("MadwaysKommunalomatBundleQuestionCreate")}}">neue Frage</a>
-</ul>
+  <div class="small-4 medium-2 columns">
+    <h3>Menü</h3>
+    <ul class="side-nav">
+      <li><a href="{{path("MadwaysKommunalomatBundleQuestion")}}">Fragen</a>
+      <li><a href="{{path("MadwaysKommunalomatBundleQuestionCreate")}}">neue Frage</a>
+      <li><a href="{{path("MadwaysKommunalomatBundleParty")}}">Parteien</a>
+      <li><a href="{{path("MadwaysKommunalomatBundlePartyCreate")}}">neue Partei</a>
+    </ul>
+  </div>
 {% endblock %}
