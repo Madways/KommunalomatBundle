@@ -17,10 +17,6 @@ class QuestionController extends Controller
     */
     public function answerAction($weight, Request $request) 
     {
-        $last_question = false;
-
-        $user = new User(); //TODO: should be done per sessions
-        $user->setSession("abc");
 
         $em = $this->getDoctrine()->getManager();
 
@@ -31,7 +27,8 @@ class QuestionController extends Controller
             return $this->redirect($this->generateUrl('welcome'));
         }
 
-        $answer = $em->getRepository('MadwaysKommunalomatBundle:UserAnswer')->findOneBy(array('user' => 61, 'question' => $question->getId() ));
+        // Find already given answer
+        $answer = $em->getRepository('MadwaysKommunalomatBundle:UserAnswer')->findOneBy(array('user' => $this->_getUser(), 'question' => $question->getId() ));
         if (!$answer) {
             $answer = new UserAnswer();
         }
@@ -53,7 +50,7 @@ class QuestionController extends Controller
             $answer->setQuestion($em->getReference('MadwaysKommunalomatBundle:Question', $form->get('question')->getData() ));
 
             // set user by id
-            $answer->setUser($em->getReference('MadwaysKommunalomatBundle:User', 61 ));
+            $answer->setUser($this->_getUser());
 
             // set the answer by clicked button
             $answer->setAnswerAsString($form->getClickedButton()->getName());
@@ -115,6 +112,19 @@ class QuestionController extends Controller
     * Helper function to get the current User from the Session and if not set create a new one
     */
     private function _getUser() {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $em = $this->getDoctrine()->getManager();
 
+        if ( !$session->has('user_id') ) {
+            $user = new User();
+            $user->setSession( $session->getId() );
+            $em->persist($user);
+            $em->flush();
+            $session->set('user_id', $user->getId());
+            return $user;
+        }
+
+        return $em->getReference('MadwaysKommunalomatBundle:User', $session->get('user_id') );
     }
 }
