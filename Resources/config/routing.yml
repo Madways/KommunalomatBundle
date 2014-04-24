@@ -4,9 +4,25 @@ MadwaysKommunalomatBundleQuestionAnswer:
     requirements:
         weight:  \d+
 
+MadwaysKommunalomatBundleResult:
+    pattern: /result/{id}
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:result, id: 1 }
+    requirements:
+        id:  \d+
+
+MadwaysKommunalomatBundleQuestion:
+    pattern: /admin/question
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:index }
+
 MadwaysKommunalomatBundleQuestionCreate:
     pattern: /admin/question/create
-    defaults: { _controller: MadwaysKommunalomatBundle:Question:create }
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:form }
+
+MadwaysKommunalomatBundleQuestionEdit:
+    pattern: /admin/question/{id}
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:form }
+    requirements:
+        id:  \d+
 
 MadwaysKommunalomatBundleParty:
     pattern: /admin/party
@@ -14,7 +30,19 @@ MadwaysKommunalomatBundleParty:
 
 MadwaysKommunalomatBundlePartyCreate:
     pattern: /admin/party/create
-    defaults: { _controller: MadwaysKommunalomatBundle:Party:create }
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:form }
+
+MadwaysKommunalomatBundlePartyEdit:
+    pattern: /admin/party/{id}
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:form }
+    requirements:
+        id:  \d+
+
+MadwaysKommunalomatBundlePartyAnswer:
+    pattern: /admin/party/{id}/answer
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:answer }
+    requirements:
+        id:  \d+
 
 MadwaysKommunalomatBundleAdminOverview:
     pattern:  /admin
