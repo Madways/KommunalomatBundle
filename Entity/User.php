@@ -22,6 +22,18 @@ class User
     protected $session;
 
     /**
+     * @var \DateTime $time_first_online
+     * @ORM\Column(type="datetime")
+     */
+    protected $time_first_online;
+
+    /**
+     * @var \DateTime $time_view_result
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $time_view_result;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -52,5 +64,51 @@ class User
     public function getSession()
     {
         return $this->session;
+    }
+
+    /**
+     * Set time_first_online
+     *
+     * @param \DateTime $timeFirstOnline
+     * @return User
+     */
+    public function setTimeFirstOnline($timeFirstOnline)
+    {
+        $this->time_first_online = $timeFirstOnline;
+
+        return $this;
+    }
+
+    /**
+     * Get time_first_online
+     *
+     * @return \DateTime 
+     */
+    public function getTimeFirstOnline()
+    {
+        return $this->time_first_online;
+    }
+
+    /**
+     * Set time_view_result
+     *
+     * @param \DateTime $timeViewResult
+     * @return User
+     */
+    public function setTimeViewResult($timeViewResult)
+    {
+        $this->time_view_result = $timeViewResult;
+
+        return $this;
+    }
+
+    /**
+     * Get time_view_result
+     *
+     * @return \DateTime 
+     */
+    public function getTimeViewResult()
+    {
+        return $this->time_view_result;
     }
 }

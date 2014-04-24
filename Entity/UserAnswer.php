@@ -35,6 +35,11 @@ class UserAnswer
      */
     protected $answer;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $count_double;
+
 
     /**
      * Set answer
@@ -144,5 +149,28 @@ class UserAnswer
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    /**
+     * Set count_double
+     *
+     * @param boolean $countDouble
+     * @return UserAnswer
+     */
+    public function setCountDouble($countDouble)
+    {
+        $this->count_double = $countDouble;
+
+        return $this;
+    }
+
+    /**
+     * Get count_double
+     *
+     * @return boolean 
+     */
+    public function getCountDouble()
+    {
+        return $this->count_double;
     }
 }

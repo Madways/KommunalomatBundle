@@ -56,6 +56,8 @@ class QuestionController extends Controller
         // Create the Form
         $form = $this->createFormBuilder($answer)
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
+                ->add('count_double', 'checkbox', array('label'     => 'doppelt gewichten?',
+                                                        'required'  => false))
                 ->add('approve', 'submit', array('label'  => 'Zustimmung'))
                 ->add('neutral', 'submit', array('label'  => 'Neutral'))
                 ->add('disapprove', 'submit', array('label'  => 'Ablehnung'))
@@ -205,6 +207,7 @@ class QuestionController extends Controller
         if ( !$session->has('kommunalomat_user_id') ) {
             $user = new User();
             $user->setSession( $session->getId() );
+            $user->setTimeFirstOnline(new \DateTime("now"));
             $em->persist($user);
             $em->flush();
             $session->set('kommunalomat_user_id', $user->getId());
