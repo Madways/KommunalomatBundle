@@ -195,19 +195,22 @@ class QuestionController extends Controller
     * Helper function to get the current User from the Session and if not set create a new one
     */
     private function _getUser() {
+
+        // TODO: move to SessionController as Service class
+        // TODO: add possibility to start a new Session
         $request = $this->getRequest();
         $session = $request->getSession();
         $em = $this->getDoctrine()->getManager();
 
-        if ( !$session->has('user_id') ) {
+        if ( !$session->has('kommunalomat_user_id') ) {
             $user = new User();
             $user->setSession( $session->getId() );
             $em->persist($user);
             $em->flush();
-            $session->set('user_id', $user->getId());
+            $session->set('kommunalomat_user_id', $user->getId());
             return $user;
         }
 
-        return $em->getReference('MadwaysKommunalomatBundle:User', $session->get('user_id') );
+        return $em->getReference('MadwaysKommunalomatBundle:User', $session->get('kommunalomat_user_id') );
     }
 }
