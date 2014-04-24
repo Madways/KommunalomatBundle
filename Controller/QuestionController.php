@@ -22,28 +22,17 @@ class QuestionController extends Controller
         $user = new User(); //TODO: should be done per sessions
         $user->setSession("abc");
 
-        // Initiate Repository
-        $repository = $this->getDoctrine()
-                ->getRepository('MadwaysKommunalomatBundle:Question');
+        $em = $this->getDoctrine()->getManager();
 
         // Find the question by weight
-        $question = $repository->findOneByWeight($weight);
+        $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
 
         if (!$question) {
             return $this->redirect($this->generateUrl('welcome'));
         }
 
-        // Initiate Repository
-        $repository2 = $this->getDoctrine()
-                ->getRepository('MadwaysKommunalomatBundle:UserAnswer');
-
-        try {
-            $answer = $repository2->createQueryBuilder('a')
-                ->where("a.user = :user AND a.question = :question")
-                ->setParameter('user', 61)
-                ->setParameter('question', $question->getId())
-                ->getQuery()->getSingleResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
+        $answer = $em->getRepository('MadwaysKommunalomatBundle:UserAnswer')->findOneBy(array('user' => 61, 'question' => $question->getId() ));
+        if (!$answer) {
             $answer = new UserAnswer();
         }
 
@@ -59,7 +48,6 @@ class QuestionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             // set it to the right question given by the form
             $answer->setQuestion($em->getReference('MadwaysKommunalomatBundle:Question', $form->get('question')->getData() ));
@@ -109,7 +97,7 @@ class QuestionController extends Controller
                      'question_count' => $this->_getQuestionCount() );
     }
 
-    /**
+    /*
     * Helper function to get the count of all questions
     */
     private function _getQuestionCount() {
@@ -121,5 +109,12 @@ class QuestionController extends Controller
                                         ->select('count(q.id)')
                                         ->getQuery()->getSingleScalarResult();
         return $question_count;
+    }
+
+    /*
+    * Helper function to get the current User from the Session and if not set create a new one
+    */
+    private function _getUser() {
+
     }
 }

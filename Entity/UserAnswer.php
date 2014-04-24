@@ -72,6 +72,25 @@ class UserAnswer
     }
 
     /**
+     * Get answer as string
+     *
+     * @return string
+     */
+    public function getAnswerAsString()
+    {
+        switch ($this->answer) {
+            case 0:
+                return "approve";
+                break;
+            case 2:
+                return "disapprove";
+                break;
+            default:
+                return "neutral";
+        }
+    }
+
+    /**
      * Get answer
      *
      * @return integer 
