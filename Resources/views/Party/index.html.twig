@@ -19,7 +19,7 @@
             <td>
               <a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id })  }}" class="">Answer</a>
               <a href="{{ path("MadwaysKommunalomatBundlePartyEdit", {'id': party.id })  }}" class="">Edit</a>
-              <a href="{{ path("MadwaysKommunalomatBundlePartyDelete", {'id': party.id })  }}" class="">Delete</a>
+              <a href="{{ path("MadwaysKommunalomatBundlePartyDelete", {'id': party.id })  }}" onclick="return confirm('are u sure?')" class="">Delete</a>
             </td>
           </tr>
           {% endfor %}

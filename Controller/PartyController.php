@@ -90,8 +90,6 @@ class PartyController extends Controller
         $em->remove($party);
         $em->flush();
 
-        // TODO: ask for confirmation
-
         return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleParty'));
     }
 
