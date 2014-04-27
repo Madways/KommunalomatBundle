@@ -107,7 +107,7 @@ class QuestionController extends Controller
 
         $form = $this->createFormBuilder($question)
                 ->add('title', 'text')
-                ->add('explanation')
+                ->add('explanation', 'textarea', array('required' => false))
                 ->add('weight', 'hidden')
                 ->add('save', 'submit')
                 ->getForm();
@@ -200,6 +200,7 @@ class QuestionController extends Controller
 
         // TODO: move to SessionController as Service class
         // TODO: add possibility to start a new Session
+        // TODO: set high cookie life time
         $request = $this->getRequest();
         $session = $request->getSession();
         $em = $this->getDoctrine()->getManager();

@@ -24,7 +24,7 @@ class Question
     protected $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $explanation;
 
@@ -32,6 +32,10 @@ class Question
      * @ORM\Column(type="integer")
      */
     protected $weight;
+
+    public function __toString() {
+        return $this->title;
+    }
 
     /**
      * Get id

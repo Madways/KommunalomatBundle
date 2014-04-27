@@ -14,6 +14,8 @@
         {{ form_widget(form.approve, {'attr': {'class': 'small success'}}) }}
         {{ form_widget(form.neutral, {'attr': {'class': 'small'}}) }}
         {{ form_widget(form.disapprove, {'attr': {'class': 'small alert'}}) }}
+        <br />
+        Frage <a href="{{ path("MadwaysKommunalomatBundleQuestionAnswer", {'weight': question.weight+1 })  }}" class="">überspringen</a>.
       {{ form_end(form) }}
     </div>
     <div class="pagination-centered">

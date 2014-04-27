@@ -58,10 +58,11 @@ MadwaysKommunalomatBundlePartyDelete:
         id:  \d+
 
 MadwaysKommunalomatBundlePartyAnswer:
-    pattern: /admin/party/{id}/answer
-    defaults: { _controller: MadwaysKommunalomatBundle:Party:answer }
+    pattern: /admin/party/{id}/answer/{weight}
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:answer, weight: 1 }
     requirements:
         id:  \d+
+        weight:  \d+
 
 MadwaysKommunalomatBundleAdminOverview:
     pattern:  /admin
