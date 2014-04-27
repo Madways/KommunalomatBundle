@@ -15,7 +15,7 @@
           {% for party in parties %}
           <tr>
             <td>{{ party.name }}</td>
-            <td>{{ party.description }}</td>
+            <td>{{ party.description | nl2br }}</td>
             <td>
               <a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id })  }}" class="">Answer</a>
               <a href="{{ path("MadwaysKommunalomatBundlePartyEdit", {'id': party.id })  }}" class="">Edit</a>

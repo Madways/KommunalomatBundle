@@ -5,11 +5,22 @@
     <h3>Partei {{ party.name }} - Frage {{ question.weight }}</h3>
     <div class="panel">
       <h4>{{ question.getTitle }}</h4>
-      {{ form(form) }}
+      {{ form_start(form) }}
+        {{ form_label(form.explanation) }}
+        {{ form_widget(form.explanation) }}
+        <br/>
+        {{ form_widget(form.approve, {'attr': {'class': 'small success'}}) }}
+        {{ form_widget(form.neutral, {'attr': {'class': 'small'}}) }}
+        {{ form_widget(form.disapprove, {'attr': {'class': 'small alert'}}) }}
+      {{ form_end(form) }}
     </div>
     <div class="pagination-centered">
     <ul class="pagination">
-      <li class="arrow unavailable"><a href="">&laquo;</a></li>
+      {% if question.getWeight != 1 %}
+        <li class="arrow"><a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id, 'weight': question.weight-1}) }}">&laquo;</a></li>
+      {% else %}
+        <li class="arrow unavailable"><a href="">&laquo;</a></li>
+      {% endif %}
       {% for i in 1..question_count %}
         {% if question.getWeight == i %}
           <li class="current"><a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id, 'weight': i})  }}">{{i}}</a></li>
@@ -17,7 +28,11 @@
           <li><a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id, 'weight': i})  }}" class="">{{i}}</a></li>
         {% endif %}
       {% endfor %}
-      <li class="arrow"><a href="">&raquo;</a></li>
+      {% if question.getWeight != question_count %}
+        <li class="arrow"><a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id, 'weight': question.weight+1}) }}">&raquo;</a></li>
+      {% else %}
+        <li class="arrow unavailable"><a href="">&raquo;</a></li>
+      {% endif %}
     </ul>
     </div>
   </div>

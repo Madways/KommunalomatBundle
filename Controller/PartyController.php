@@ -20,14 +20,12 @@ class PartyController extends Controller
     public function indexAction() 
     {
 
-        // Initiate Repository
         $repository = $this->getDoctrine()->getRepository('MadwaysKommunalomatBundle:Party');
 
-        // Find the question by weight
         $parties = $repository->findAll();
 
         if (!$parties) {
-            throw $this->createNotFoundException('No Parties found!'); //TODO: handle this more graceful, maybe redirect to create page?
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundlePartyCreate'));
         }
 
         return array('parties' => $parties);
@@ -84,6 +82,11 @@ class PartyController extends Controller
             throw new NotFoundHttpException("Invalid Party.");
         }
 
+        $answers = $em->getRepository('MadwaysKommunalomatBundle:PartyAnswer')->findByParty($party);
+
+        foreach($answers as $answer) {
+            $em->remove($answer);
+        }
         $em->remove($party);
         $em->flush();
 
@@ -112,7 +115,7 @@ class PartyController extends Controller
         $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
 
         if (!$question) {
-            throw new NotFoundHttpException("Invalid Question.");
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleParty'));
         }
 
         // Find already given answer
@@ -123,14 +126,17 @@ class PartyController extends Controller
 
         $form = $this->createFormBuilder($answer)
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
-                ->add('explanation', 'text')
-                ->add('answer', 'choice', 
+                ->add('explanation', 'text', array('required'  => false))
+                /*->add('answer', 'choice', 
                     array('choices' => array('0' => 'approve', 
                                             '1' => 'neutral', 
                                             '2' => 'disapprove'),
                             'multiple' => false,
                             'expanded' => true ))
-                ->add('submit', 'submit')
+                ->add('submit', 'submit')*/
+                ->add('approve', 'submit', array('label'  => 'Zustimmung'))
+                ->add('neutral', 'submit', array('label'  => 'Neutral'))
+                ->add('disapprove', 'submit', array('label'  => 'Ablehnung'))
                 ->getForm();
 
         $form->handleRequest($request);
@@ -141,6 +147,8 @@ class PartyController extends Controller
 
             // set user by id
             $answer->setParty($party);
+
+            $answer->setAnswerAsString($form->getClickedButton()->getName());
 
             $em->persist($answer);
             $em->flush();

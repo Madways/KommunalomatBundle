@@ -9,4 +9,8 @@ class QuestionRepository extends EntityRepository
     {
         return $this->findBy(array(), array('weight' => 'ASC'));
     }
+
+    public function findAllWithPartyAnswers() {
+        return $this->createQuery('SELECT q FROM kommunalomat_question JOIN PartyAnswer');
+    }
 }

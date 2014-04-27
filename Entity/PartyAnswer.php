@@ -32,7 +32,7 @@ class PartyAnswer
     protected $answer;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $explanation;
 
@@ -45,6 +45,28 @@ class PartyAnswer
     public function setAnswer($answer)
     {
         $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Set answer as string
+     *
+     * @param string $answer
+     * @return UserAnswer
+     */
+    public function setAnswerAsString($answer)
+    {
+        switch ($answer) {
+            case "approve":
+                $this->answer = 0;
+                break;
+            case "disapprove":
+                $this->answer = 2;
+                break;
+            default:
+                $this->answer = 1;
+        }
 
         return $this;
     }
