@@ -1,0 +1,29 @@
+{% extends "MadwaysKommunalomatBundle::admin.html.twig" %}
+
+{% block content_admin %}
+    <div class="row">
+      <h3>Alle Parteien</h3>
+      <table class="small-12 columns">
+        <thead>
+          <tr>
+            <th>Partei</th>
+            <th>Beschreibung</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for party in parties %}
+          <tr>
+            <td>{{ party.name }}</td>
+            <td>{{ party.description }}</td>
+            <td>
+              <a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id })  }}" class="">Answer</a>
+              <a href="{{ path("MadwaysKommunalomatBundlePartyEdit", {'id': party.id })  }}" class="">Edit</a>
+              <a href="{{ path("MadwaysKommunalomatBundlePartyDelete", {'id': party.id })  }}" class="">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock %}
