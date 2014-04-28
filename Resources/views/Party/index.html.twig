@@ -2,25 +2,28 @@
 
 {% block content_admin %}
     <div class="row">
-      <h3>Alle Parteien</h3>
+      <h3>{{ party.name }}</h3>
+      <p>{{ party.description | nl2br }}
+      <br />
+      <a href="{{ path("MadwaysKommunalomatBundlePartyEdit", {'id': party.id })  }}" class="">Edit</a>
+      </p>
+      <h3>Antworten</h3>
       <table class="small-12 columns">
         <thead>
           <tr>
-            <th>Partei</th>
-            <th>Beschreibung</th>
+            <th>#</th>
+            <th>Frage</th>
+            <th>Antwort</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {% for party in parties %}
+          {% for answer in answers %}
           <tr>
-            <td>{{ party.name }}</td>
-            <td>{{ party.description | nl2br }}</td>
-            <td>
-              <a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id })  }}" class="">Answer</a>
-              <a href="{{ path("MadwaysKommunalomatBundlePartyEdit", {'id': party.id })  }}" class="">Edit</a>
-              <a href="{{ path("MadwaysKommunalomatBundlePartyDelete", {'id': party.id })  }}" onclick="return confirm('are u sure?')" class="">Delete</a>
-            </td>
+            <td> {{ answer.question.weight }} </a></td>
+            <td> {{ answer.question.title }} </td>
+            <td> {{ answer.getAnswerAsString }} </td>
+            <td> <a href="{{ path("MadwaysKommunalomatBundlePartyAnswer", {'id': party.id, 'weight': answer.question.weight })  }}" class="">Edit</a> </td>
           </tr>
           {% endfor %}
         </tbody>

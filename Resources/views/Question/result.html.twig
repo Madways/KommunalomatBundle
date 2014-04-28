@@ -1,0 +1,28 @@
+{% extends "::base.html.twig" %}
+
+{% block content %}
+    <div class="row">
+      <h3>Das Ergebnis</h3>
+      <table class="small-12 columns">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Übereinstimmung </th>
+            <th>in % </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+            <tr>
+              <td> {{ result.party.name }} </td>
+              <td> <div class="progress"> <span class="meter" style="width: {{ (result.points / max_points *100) | round }}%"></span> </div> </td>
+              <td>{{ (result.points / max_points *100) | round }} </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p>
+        Mit dem folgenden Link kannst du dein Ergebnis mit anderen teilen: <a href="{{ url("MadwaysKommunalomatBundleResult", {'id': user.id })  }}" class="">{{ url("MadwaysKommunalomatBundleResult", {'id': user.id })  }}</a> 
+      </p>
+    </div>
+{% endblock %}

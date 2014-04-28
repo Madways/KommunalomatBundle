@@ -37,16 +37,22 @@ MadwaysKommunalomatBundleQuestionMove:
         id:  \d+
         direction: up|down
 
-MadwaysKommunalomatBundleParty:
+MadwaysKommunalomatBundlePartyOverview:
     pattern: /admin/party
-    defaults: { _controller: MadwaysKommunalomatBundle:Party:index }
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:overview }
 
 MadwaysKommunalomatBundlePartyCreate:
     pattern: /admin/party/create
     defaults: { _controller: MadwaysKommunalomatBundle:Party:form }
 
-MadwaysKommunalomatBundlePartyEdit:
+MadwaysKommunalomatBundleParty:
     pattern: /admin/party/{id}
+    defaults: { _controller: MadwaysKommunalomatBundle:Party:index }
+    requirements:
+        id:  \d+
+
+MadwaysKommunalomatBundlePartyEdit:
+    pattern: /admin/party/{id}/edit
     defaults: { _controller: MadwaysKommunalomatBundle:Party:form }
     requirements:
         id:  \d+

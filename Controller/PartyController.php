@@ -10,25 +10,40 @@ use Symfony\Component\HttpFoundation\Request;
 use Madways\KommunalomatBundle\Entity\Party;
 use Madways\KommunalomatBundle\Entity\Question;
 use Madways\KommunalomatBundle\Entity\PartyAnswer;
-use Madways\KommunalomatBundle\Form\Type\PartyAnswerType;
 
 class PartyController extends Controller
 {
     /**
     * @Template()
     */
-    public function indexAction() 
+    public function overviewAction() 
     {
 
-        $repository = $this->getDoctrine()->getRepository('MadwaysKommunalomatBundle:Party');
-
-        $parties = $repository->findAll();
+        $parties = $this->getDoctrine()->getRepository('MadwaysKommunalomatBundle:Party')->findAll();;
 
         if (!$parties) {
             return $this->redirect($this->generateUrl('MadwaysKommunalomatBundlePartyCreate'));
         }
 
         return array('parties' => $parties);
+    }
+
+    /**
+    * @Template()
+    */
+    public function indexAction($id) 
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $party = $em->find('MadwaysKommunalomatBundle:Party', $id);
+
+        if (!$party) {
+            throw new NotFoundHttpException("Invalid party.");
+        }
+
+        return array('party' => $party,
+                    'answers' => $party->getAnswersSorted());
     }
 
     /**
@@ -62,7 +77,7 @@ class PartyController extends Controller
             $em->persist($party);
             $em->flush();
 
-            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleParty"));
+            return $this->redirect($this->generateUrl("MadwaysKommunalomatBundlePartyOverview"));
         }
 
         return array('form' => $form->createView());
@@ -90,7 +105,7 @@ class PartyController extends Controller
         $em->remove($party);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleParty'));
+        return $this->redirect($this->generateUrl('MadwaysKommunalomatBundlePartyOverview'));
     }
 
     /**
@@ -113,7 +128,7 @@ class PartyController extends Controller
         $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
 
         if (!$question) {
-            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleParty'));
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundlePartyOverview'));
         }
 
         // Find already given answer

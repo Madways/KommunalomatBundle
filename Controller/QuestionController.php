@@ -4,6 +4,7 @@ namespace Madways\KommunalomatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Madways\KommunalomatBundle\Entity\Question as Question;
@@ -43,7 +44,7 @@ class QuestionController extends Controller
         $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
 
         if (!$question) {
-            return $this->redirect($this->generateUrl('welcome'));
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleResult', array('id' => $this->_getUser()->getId())));
         }
 
         // Find already given answer
@@ -133,13 +134,32 @@ class QuestionController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $question = $em->find('MadwaysKommunalomatBundle:Question', $id);
+        $question_del = $em->find('MadwaysKommunalomatBundle:Question', $id);
 
-        if (!$question) {
+        if (!$question_del) {
             throw new NotFoundHttpException("Invalid question.");
         }
 
-        $em->remove($question);
+        foreach ($question_del->getPartyAnswers() as $party_answer) {
+            $em->remove($party_answer);
+        }
+        foreach ($question_del->getUserAnswers() as $user_answer) {
+            $em->remove($user_answer);
+        }
+        $weight = $question_del->getWeight();
+        $em->remove($question_del);
+
+        $em->flush();
+
+        // resort all question weights
+        $questions = $em->getRepository('MadwaysKommunalomatBundle:Question')->findAll();
+
+        foreach ($questions as $question) {
+            if ($question->getWeight() > $weight ) {
+                $question->setWeight($question->getWeight()-1);
+            }
+        }
+
         $em->flush();
 
         // TODO: resort all question weights
@@ -179,6 +199,60 @@ class QuestionController extends Controller
         return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestion'));
     }
 
+    /**
+    * 
+    * @Template()
+    */
+    public function resultAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if(!$id) {
+            $id = $this->_getUser();
+        }
+
+        $user = $em->find('MadwaysKommunalomatBundle:User', $id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('The user does not exist');
+        }
+
+        $parties = $em->getRepository('MadwaysKommunalomatBundle:Party')->findAll();
+
+        $result = array();
+
+        foreach($parties as $party) {
+            $result[$party->getId()] = array('party' => $party, 'points' => 0);
+        }
+
+        $max_points = 0;
+
+        foreach($user->getAnswers() as $answer) {
+            $party_answers = $em->getRepository('MadwaysKommunalomatBundle:PartyAnswer')->findByQuestion($answer->getQuestion());
+            $max_points += $answer->getCountDouble()? 4 : 2;
+
+            foreach ($party_answers as $party_answer) {
+                $result[$party_answer->getParty()->getId()]['points'] += $this->evaluateAnswer($answer->getAnswer(), $party_answer->getAnswer(), $answer->getCountDouble());
+            }
+        }
+
+        if ($max_points == 0) {
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestionAnswer', array('weight' => 1 )));
+        }
+
+        usort($result, array($this, "cmp_points"));
+
+        return array('user' => $user,
+                     'results' => $result,
+                     'max_points' => $max_points);
+
+    }
+
+    private function evaluateAnswer($user_answer, $party_answer, $double) {
+        $points = 2 - abs($user_answer - $party_answer);
+        return ($double? $points*2 : $points);
+    }
+
     /*
     * Helper function to get the count of all questions
     */
@@ -200,7 +274,6 @@ class QuestionController extends Controller
 
         // TODO: move to SessionController as Service class
         // TODO: add possibility to start a new Session
-        // TODO: set high cookie life time
         $request = $this->getRequest();
         $session = $request->getSession();
         $em = $this->getDoctrine()->getManager();
@@ -216,5 +289,9 @@ class QuestionController extends Controller
         }
 
         return $em->getReference('MadwaysKommunalomatBundle:User', $session->get('kommunalomat_user_id') );
+    }
+
+    private function cmp_points($a, $b) {
+        return ($a['points'] < $b['points']);
     }
 }

@@ -3,6 +3,7 @@
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -32,6 +33,20 @@ class Question
      * @ORM\Column(type="integer")
      */
     protected $weight;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="PartyAnswer", mappedBy="question")
+     * 
+     */
+    private $party_answers;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="UserAnswer", mappedBy="question")
+     * 
+     */
+    private $user_answers;
 
     public function __toString() {
         return $this->title;
@@ -114,5 +129,79 @@ class Question
     public function getExplanation()
     {
         return $this->explanation;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->party_answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->user_answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add party_answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\PartyAnswer $partyAnswers
+     * @return Question
+     */
+    public function addPartyAnswer(\Madways\KommunalomatBundle\Entity\PartyAnswer $partyAnswers)
+    {
+        $this->party_answers[] = $partyAnswers;
+
+        return $this;
+    }
+
+    /**
+     * Remove party_answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\PartyAnswer $partyAnswers
+     */
+    public function removePartyAnswer(\Madways\KommunalomatBundle\Entity\PartyAnswer $partyAnswers)
+    {
+        $this->party_answers->removeElement($partyAnswers);
+    }
+
+    /**
+     * Get party_answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPartyAnswers()
+    {
+        return $this->party_answers;
+    }
+
+    /**
+     * Add user_answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\UserAnswer $userAnswers
+     * @return Question
+     */
+    public function addUserAnswer(\Madways\KommunalomatBundle\Entity\UserAnswer $userAnswers)
+    {
+        $this->user_answers[] = $userAnswers;
+
+        return $this;
+    }
+
+    /**
+     * Remove user_answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\UserAnswer $userAnswers
+     */
+    public function removeUserAnswer(\Madways\KommunalomatBundle\Entity\UserAnswer $userAnswers)
+    {
+        $this->user_answers->removeElement($userAnswers);
+    }
+
+    /**
+     * Get user_answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserAnswers()
+    {
+        return $this->user_answers;
     }
 }

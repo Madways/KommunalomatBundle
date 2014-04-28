@@ -2,11 +2,11 @@
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="kommunalomat_user_answer")
- * 
  * This table maps the selected value for an answer to the user 
  */
 class UserAnswer
@@ -14,15 +14,16 @@ class UserAnswer
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="User") 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers") 
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false) 
      */
     protected $user;
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Question") 
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="user_answers") 
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id", nullable=false) 
+     * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $question;
 

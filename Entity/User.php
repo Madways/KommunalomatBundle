@@ -2,6 +2,7 @@
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -32,6 +33,13 @@ class User
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $time_view_result;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="UserAnswer", mappedBy="user")
+     * 
+     */
+    private $answers;
 
     /**
      * Get id
@@ -110,5 +118,56 @@ class User
     public function getTimeViewResult()
     {
         return $this->time_view_result;
+    }
+
+    private static function cmp($a, $b) {
+        return ($a->getWeight() > $b->getWeight())? 1 : -1;
+    }
+
+    public function getAnswersSorted()
+    {
+        $arr = $this->answers->toArray();
+        usort($arr, array($this, 'cmp'));
+        return $arr;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\UserAnswer $answers
+     * @return User
+     */
+    public function addAnswer(\Madways\KommunalomatBundle\Entity\UserAnswer $answers)
+    {
+        $this->answers[] = $answers;
+
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\UserAnswer $answers
+     */
+    public function removeAnswer(\Madways\KommunalomatBundle\Entity\UserAnswer $answers)
+    {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 }

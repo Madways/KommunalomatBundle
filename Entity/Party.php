@@ -2,6 +2,7 @@
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -25,6 +26,13 @@ class Party
      * @ORM\Column(type="text")
      */
     protected $description;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="PartyAnswer", mappedBy="party")
+     * 
+     */
+    private $answers;
 
     /**
      * Get id
@@ -81,4 +89,57 @@ class Party
     {
         return $this->description;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\PartyAnswer $answers
+     * @return Party
+     */
+    public function addAnswer(\Madways\KommunalomatBundle\Entity\PartyAnswer $answers)
+    {
+        $this->answers[] = $answers;
+
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \Madways\KommunalomatBundle\Entity\PartyAnswer $answers
+     */
+    public function removeAnswer(\Madways\KommunalomatBundle\Entity\PartyAnswer $answers)
+    {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    private static function cmp($a, $b) {
+        return ($a->getWeight() > $b->getWeight())? 1 : -1;
+    }
+
+    public function getAnswersSorted()
+    {
+        $arr = $this->answers->toArray();
+        //print_r(usort($arr, array($this, 'cmp')));
+        usort($arr, array($this, 'cmp'));
+        return $arr;
+    }
+
 }

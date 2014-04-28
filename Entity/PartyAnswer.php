@@ -2,6 +2,7 @@
 namespace Madways\KommunalomatBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -14,20 +15,22 @@ class PartyAnswer
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Party") 
+     * @ORM\ManyToOne(targetEntity="Party", inversedBy="answers")
      * @ORM\JoinColumn(name="party_id", referencedColumnName="id", nullable=false) 
      */
     protected $party;
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Question") 
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="party_answers") 
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id", nullable=false) 
+     * 
      */
     protected $question;
 
     /**
      * @ORM\Column(type="integer")
+     * 
      */
     protected $answer;
 
@@ -69,6 +72,25 @@ class PartyAnswer
         }
 
         return $this;
+    }
+
+    /**
+     * Get answer as string
+     *
+     * @return string
+     */
+    public function getAnswerAsString()
+    {
+        switch ($this->answer) {
+            case 0:
+                return "approve";
+                break;
+            case 2:
+                return "disapprove";
+                break;
+            default:
+                return "neutral";
+        }
     }
 
     /**
@@ -148,5 +170,10 @@ class PartyAnswer
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    public function getWeight()
+    {
+        return $this->question->getWeight();
     }
 }
