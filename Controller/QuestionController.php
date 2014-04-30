@@ -23,13 +23,14 @@ class QuestionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $questions = $em->getRepository('MadwaysKommunalomatBundle:Question')->findAll();
+        $question_count = $em->getRepository('MadwaysKommunalomatBundle:Question')->getCount();
 
         if (!$questions) {
             return $this->redirect($this->generateUrl("MadwaysKommunalomatBundleQuestionCreate"));
         }
 
         return array('questions' => $questions,
-                     'question_count' => $this->_getQuestionCount());
+                     'question_count' => $question_count);
     }
 
     /**
@@ -42,6 +43,7 @@ class QuestionController extends Controller
 
         // Find the question by weight
         $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
+        $question_count = $em->getRepository("MadwaysKommunalomatBundle:Question")->getCount();
 
         if (!$question) {
             return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleResult', array('id' => $this->_getUser()->getId())));
@@ -85,7 +87,7 @@ class QuestionController extends Controller
 
         return array('question' => $question,
                      'form' => $form->createView(),
-                     'question_count' => $this->_getQuestionCount());
+                     'question_count' => $question_count);
     }
 
     /**
@@ -95,6 +97,8 @@ class QuestionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $question_count = $em->getRepository("MadwaysKommunalomatBundle:Question")->getCount();
+
         if (isset($id)) {
             $question = $em->find('MadwaysKommunalomatBundle:Question', $id);
 
@@ -103,7 +107,7 @@ class QuestionController extends Controller
             }
         } else {
             $question = new Question();
-            $question->setWeight($this->_getQuestionCount()+1);
+            $question->setWeight( $question_count+1);
         }
 
         $form = $this->createFormBuilder($question)
@@ -123,7 +127,7 @@ class QuestionController extends Controller
         }
 
         return array('form' => $form->createView(),
-                     'question_count' => $this->_getQuestionCount() );
+                     'question_count' => $question_count );
     }
 
     /**
@@ -161,9 +165,6 @@ class QuestionController extends Controller
         }
 
         $em->flush();
-
-        // TODO: resort all question weights
-        // TODO: ask for confirmation
 
         return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestion'));
     }
@@ -251,20 +252,6 @@ class QuestionController extends Controller
     private function evaluateAnswer($user_answer, $party_answer, $double) {
         $points = 2 - abs($user_answer - $party_answer);
         return ($double? $points*2 : $points);
-    }
-
-    /*
-    * Helper function to get the count of all questions
-    */
-    private function _getQuestionCount() {
-        // Initiate Repository
-        $repository = $this->getDoctrine()
-                ->getRepository('MadwaysKommunalomatBundle:Question');
-        // get count of all questions
-        $question_count = $repository->createQueryBuilder("q")
-                                        ->select('count(q.id)')
-                                        ->getQuery()->getSingleScalarResult();
-        return $question_count;
     }
 
     /*

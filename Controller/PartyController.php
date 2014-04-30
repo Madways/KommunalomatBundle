@@ -126,6 +126,7 @@ class PartyController extends Controller
 
         // Find the question by weight
         $question = $em->getRepository('MadwaysKommunalomatBundle:Question')->findOneByWeight($weight);
+        $question_count = $em->getRepository('MadwaysKommunalomatBundle:Question')->getCount();
 
         if (!$question) {
             return $this->redirect($this->generateUrl('MadwaysKommunalomatBundlePartyOverview'));
@@ -172,21 +173,7 @@ class PartyController extends Controller
         return array('party' => $party,
                      'question' => $question,
                      'form' => $form->createView(),
-                     'question_count' => $this->_getQuestionCount());
+                     'question_count' => $question_count);
         
-    }
-
-    /*
-    * Helper function to get the count of all questions
-    */
-    private function _getQuestionCount() {
-        // Initiate Repository
-        $repository = $this->getDoctrine()
-                ->getRepository('MadwaysKommunalomatBundle:Question');
-        // get count of all questions
-        $question_count = $repository->createQueryBuilder("q")
-                                        ->select('count(q.id)')
-                                        ->getQuery()->getSingleScalarResult();
-        return $question_count;
     }
 }

@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
  * @ORM\Table(name="kommunalomat_question")
  * @ORM\Entity(repositoryClass="Madways\KommunalomatBundle\Entity\Repository\QuestionRepository")
  */
