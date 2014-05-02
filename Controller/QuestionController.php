@@ -146,6 +146,7 @@ class QuestionController extends Controller
             throw new NotFoundHttpException("Invalid question.");
         }
 
+        // TODO: set the requirement in the Model so i have not to delete them by hand...
         foreach ($question_del->getPartyAnswers() as $party_answer) {
             $em->remove($party_answer);
         }
@@ -269,18 +270,7 @@ class QuestionController extends Controller
             throw $this->createNotFoundException('The user does not exist');
         }
 
-        $questions = $em->createQueryBuilder()
-                        ->select('q as question','ua.answer as user_answer', 'ua.count_double', 'p', 'pa')
-                        ->from('MadwaysKommunalomatBundle:Question', 'q')
-                        ->leftJoin('q.user_answers', 'ua')
-                        ->leftJoin('q.party_answers', 'pa')
-                        ->leftJoin('pa.party', 'p')
-                        ->where('ua.user = :user')
-                        ->orderBy('p.id', 'ASC')
-                        ->orderBy('q.weight', 'ASC')
-                        ->setParameter('user', $user)
-                        ->getQuery()
-                        ->getArrayResult();
+        $questions = $em->getRepository('MadwaysKommunalomatBundle:Question')->getAllWithAnswersByUser($user);
 
         if (empty($questions)) {
             return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestionAnswer', array('weight' => 1 )));
