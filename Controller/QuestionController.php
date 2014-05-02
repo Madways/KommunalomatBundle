@@ -270,16 +270,21 @@ class QuestionController extends Controller
         }
 
         $questions = $em->createQueryBuilder()
-                        ->select('q.title', 'ua.answer')
+                        ->select('q as question','ua.answer as user_answer', 'ua.count_double', 'p', 'pa')
                         ->from('MadwaysKommunalomatBundle:Question', 'q')
-                        ->leftJoin('MadwaysKommunalomatBundle:UserAnswer', 'ua')
-                        ->leftJoin('MadwaysKommunalomatBundle:Party', 'p')
-                        ->where('ua.question = q and ua.question = q and ua.user = :user')
+                        ->leftJoin('q.user_answers', 'ua')
+                        ->leftJoin('q.party_answers', 'pa')
+                        ->leftJoin('pa.party', 'p')
+                        ->where('ua.user = :user')
+                        ->orderBy('p.id', 'ASC')
+                        ->orderBy('q.weight', 'ASC')
                         ->setParameter('user', $user)
-                        ->getQuery();
+                        ->getQuery()
+                        ->getArrayResult();
 
-        print_r($questions->getResult(Query::HYDRATE_ARRAY));
-
+        if (empty($questions)) {
+            return $this->redirect($this->generateUrl('MadwaysKommunalomatBundleQuestionAnswer', array('weight' => 1 )));
+        }
 
         return array('questions' => $questions);
 

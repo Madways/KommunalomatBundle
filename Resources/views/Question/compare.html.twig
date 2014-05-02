@@ -6,19 +6,21 @@
       <table class="small-12 columns">
         <thead>
           <tr>
+            <th>#</th>
             <th>Name</th>
             <th>Du </th>
-            {% for user.answers in questions.getPartyAnswers %}
+            {% for party_answer in questions.0.question.party_answers %}
               <td>{{party_answer.party.name}}</td>
             {% endfor %}
           </tr>
         </thead>
         <tbody>
-          {% for question in questions %}
+          {% for row in questions %}
             <tr>
-              <td>{{question.title}}</td>
-              <td>{#{question.UserAnswer}#}</td>
-              {% for party_answer in question.getPartyAnswers %}
+              <td>{{row.question.weight}}</td>
+              <td>{{row.question.title}}</td>
+              <td>{{row.user_answer}}</td>
+              {% for party_answer in row.question.party_answers %}
                 <td>{{party_answer.party.name}}: {{party_answer.answer}}</td>
               {% endfor %}
             </tr>
