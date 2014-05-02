@@ -14,14 +14,14 @@ class UserAnswer
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers") 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers", fetch="EAGER") 
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false) 
      */
     protected $user;
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="user_answers") 
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="user_answers", fetch="EAGER") 
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id", nullable=false) 
      * @ORM\OrderBy({"weight" = "ASC"})
      */

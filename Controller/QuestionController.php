@@ -4,12 +4,14 @@ namespace Madways\KommunalomatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\ORM\Query;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Madways\KommunalomatBundle\Entity\Question as Question;
-use Madways\KommunalomatBundle\Entity\UserAnswer as UserAnswer;
-use Madways\KommunalomatBundle\Entity\User as User;
+use Madways\KommunalomatBundle\Entity\UserAnswer;
+use Madways\KommunalomatBundle\Entity\PartyAnswer;
+use Madways\KommunalomatBundle\Entity\User;
 
 class QuestionController extends Controller
 {
@@ -61,9 +63,9 @@ class QuestionController extends Controller
                 ->add('question', 'hidden', array('mapped' => false, 'data' => $question->getID() ))
                 ->add('count_double', 'checkbox', array('label'     => 'doppelt gewichten?',
                                                         'required'  => false))
-                ->add('approve', 'submit', array('label'  => 'Zustimmung'))
-                ->add('neutral', 'submit', array('label'  => 'Neutral'))
-                ->add('disapprove', 'submit', array('label'  => 'Ablehnung'))
+                ->add('approve', 'submit', array('label'  => 'Stimme zu'))
+                ->add('neutral', 'submit', array('label'  => 'neutral'))
+                ->add('disapprove', 'submit', array('label'  => 'Stimme nicht zu'))
                 ->getForm();
 
         $form->handleRequest($request);
@@ -246,6 +248,40 @@ class QuestionController extends Controller
         return array('user' => $user,
                      'results' => $result,
                      'max_points' => $max_points);
+
+    }
+
+    /**
+    * 
+    * @Template()
+    */
+    public function compareAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if(!$id) {
+            $id = $this->_getUser();
+        }
+
+        $user = $em->find('MadwaysKommunalomatBundle:User', $id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('The user does not exist');
+        }
+
+        $questions = $em->createQueryBuilder()
+                        ->select('q.title', 'ua.answer')
+                        ->from('MadwaysKommunalomatBundle:Question', 'q')
+                        ->leftJoin('MadwaysKommunalomatBundle:UserAnswer', 'ua')
+                        ->leftJoin('MadwaysKommunalomatBundle:Party', 'p')
+                        ->where('ua.question = q and ua.question = q and ua.user = :user')
+                        ->setParameter('user', $user)
+                        ->getQuery();
+
+        print_r($questions->getResult(Query::HYDRATE_ARRAY));
+
+
+        return array('questions' => $questions);
 
     }
 

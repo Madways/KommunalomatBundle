@@ -19,6 +19,7 @@ class PartyController extends Controller
     public function overviewAction() 
     {
 
+        // TODO: Check if all answers were given (count_question*count_parties=count_PartyAnswers)
         $parties = $this->getDoctrine()->getRepository('MadwaysKommunalomatBundle:Party')->findAll();;
 
         if (!$parties) {

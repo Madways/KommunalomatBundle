@@ -1,0 +1,29 @@
+{% extends "::base.html.twig" %}
+
+{% block content %}
+    <div class="row">
+      <h3>Im direkten Vergleich</h3>
+      <table class="small-12 columns">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Du </th>
+            {% for user.answers in questions.getPartyAnswers %}
+              <td>{{party_answer.party.name}}</td>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for question in questions %}
+            <tr>
+              <td>{{question.title}}</td>
+              <td>{#{question.UserAnswer}#}</td>
+              {% for party_answer in question.getPartyAnswers %}
+                <td>{{party_answer.party.name}}: {{party_answer.answer}}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

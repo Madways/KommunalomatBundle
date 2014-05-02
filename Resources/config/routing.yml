@@ -10,6 +10,12 @@ MadwaysKommunalomatBundleResult:
     requirements:
         id:  \d+
 
+MadwaysKommunalomatBundleCompare:
+    pattern: /compare/{id}
+    defaults: { _controller: MadwaysKommunalomatBundle:Question:compare, id: null }
+    requirements:
+        id:  \d+
+
 MadwaysKommunalomatBundleQuestion:
     pattern: /admin/question
     defaults: { _controller: MadwaysKommunalomatBundle:Question:index }

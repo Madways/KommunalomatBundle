@@ -30,7 +30,6 @@ class Party
     /**
      *
      * @ORM\OneToMany(targetEntity="PartyAnswer", mappedBy="party")
-     * 
      */
     private $answers;
 

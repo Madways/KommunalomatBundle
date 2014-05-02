@@ -15,16 +15,16 @@ class PartyAnswer
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Party", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="Party", inversedBy="answers", fetch="EAGER")
      * @ORM\JoinColumn(name="party_id", referencedColumnName="id", nullable=false) 
      */
     protected $party;
 
     /** 
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="party_answers") 
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="party_answers", fetch="EAGER") 
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id", nullable=false) 
-     * 
+     * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $question;
 
