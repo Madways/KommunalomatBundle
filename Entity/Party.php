@@ -34,6 +34,16 @@ class Party
     private $answers;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $image;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $url;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -141,4 +151,50 @@ class Party
         return $arr;
     }
 
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return Party
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Party
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }

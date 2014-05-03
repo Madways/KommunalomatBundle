@@ -67,10 +67,12 @@ class PartyController extends Controller
         $form = $this->createFormBuilder($party)
                 ->add('name', 'text')
                 ->add('description')
+                ->add('image', 'text')
+                ->add('url', 'text')         // TODO: make it possible to upload a picture
                 ->add('save', 'submit')
                 ->getForm();
 
-        // TODO: make it possible to upload a picture
+
 
         $form->handleRequest($request);
 
