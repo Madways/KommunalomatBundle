@@ -1,0 +1,20 @@
+{% if answer == "0" %}
+  {% set class = "success" %}
+  {% set icon = "▴" %}
+{% elseif answer == "1" %}
+  {% set class = "" %}
+  {% set icon = "-" %}
+{% elseif answer == "2" %}
+  {% set class = "alert" %}
+  {% set icon = "▾" %}
+{% endif %}
+
+<span 
+  class="button small radius {{ class }}" 
+  {% if explanation %}
+    data-tooltip data-options="disable_for_touch:true" class="has-tip tip-bottom" 
+    title="<div style='max-width: 50em; overflow: auto;'><p>{{ explanation | nl2br }}</p>"
+  {% endif %}
+>
+  {{ icon }}
+</span>

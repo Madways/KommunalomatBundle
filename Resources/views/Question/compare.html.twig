@@ -19,13 +19,20 @@
             <tr>
               <td>{{row.question.weight}}</td>
               <td>{{row.question.title}}</td>
-              <td>{{row.user_answer}}</td>
+              <td>
+                {% include 'MadwaysKommunalomatBundle:Question:_user_answer_button.html.twig' with {'answer': row.user_answer, 'question_weight': row.question.weight} %}
+              </td>
               {% for party_answer in row.question.party_answers %}
-                <td>{{party_answer.party.name}}: {{party_answer.answer}}</td>
+                <td>
+                  {% include 'MadwaysKommunalomatBundle:Question:_party_answer_button.html.twig' with {'answer': party_answer.answer, 'explanation': party_answer.explanation } %}
+                </td>
               {% endfor %}
             </tr>
           {% endfor %}
         </tbody>
       </table>
+      <p class="text-center">
+        <a href="{{ url("MadwaysKommunalomatBundleResult") }}" class="">zurück zur Übersicht</a>
+      </p>
     </div>
 {% endblock %}

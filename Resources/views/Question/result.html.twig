@@ -28,6 +28,9 @@
           {% endfor %}
         </tbody>
       </table>
+      <p class="text-center">
+        <a href="{{ url("MadwaysKommunalomatBundleCompare") }}">deine Antworten im direkten Vergleich mit den Parteien</a>
+      </p>
       <p>
         Mit dem folgenden Link kannst du dein Ergebnis mit anderen teilen: <a href="{{ url("MadwaysKommunalomatBundleResult", {'id': user.id })  }}" class="">{{ url("MadwaysKommunalomatBundleResult", {'id': user.id })  }}</a> 
       </p>
