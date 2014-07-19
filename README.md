@@ -1,7 +1,7 @@
 KommunalomatBundle
 =====================
 
-Dies ist das Symfony Bundle für den Karlsruher Kommunalomat. Es wurde durch die Madways UG für den Stadtjugendauschuss für die Kommunalwahlen 2014 entwickelt.
+Dies ist das Symfony Bundle für den Karlsruher Kommunalomat. Es wurde durch die Madways UG für den Stadtjugendauschuss Karlsruhe ür die Kommunalwahlen 2014 entwickelt.
 Alle Dateien in diesem Bundle wurden unter CC-BY-NC veröffentlich. Somit ist nichtkommerzielle Weiterverwendung gestattet, bzw. sogar erwünscht.
 
 Produktiveinsatz
