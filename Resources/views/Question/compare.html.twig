@@ -17,7 +17,11 @@
         <tbody>
           {% for row in questions %}
             <tr>
-              <td>{{row.question.weight}}</td>
+              <td>
+                <a href="{{ path("MadwaysKommunalomatBundleQuestionAnswer", {'weight': row.question.weight })  }}">
+                  {{row.question.weight}}
+                </a>
+              </td>
               <td>{{row.question.title}}</td>
               <td>
                 {% include 'MadwaysKommunalomatBundle:Question:_user_answer_button.html.twig' with {'answer': row.user_answer, 'question_weight': row.question.weight} %}
